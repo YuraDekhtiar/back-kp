@@ -26,7 +26,6 @@ public class MyTask {
         model.setCategory(myTask.getCategory());
         model.setTags(myTask.getTags());
         model.setAnswers(myTask.getAnswers().stream().map(Answer::toModel).collect(Collectors.toList()));
-     //   model.setAuthor(myTask.getAuthor());
 
         return model;
     }

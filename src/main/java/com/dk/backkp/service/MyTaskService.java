@@ -26,6 +26,8 @@ public class MyTaskService {
 
         myTask.getAnswers().stream().forEach(answerEntity -> answerEntity.setTask(myTask));
 
+        myTask.getImages().stream().forEach(imageEntity -> imageEntity.setTask(myTask));
+
         return taskRepository.save(myTask);
     }
 

@@ -9,13 +9,13 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 @Controller
 @RequestMapping
@@ -25,10 +25,9 @@ public class UploadController {
 
 
     @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity uploadFile(@RequestParam MultipartFile file) throws IOException {
-      //  uploadService.Load(file);
-        System.out.println(file.getName());
-        System.out.println("conn");
-        return ResponseEntity.ok("ok");
+    public ResponseEntity uploadFile(@RequestParam(value="file") MultipartFile[] files) throws Exception {
+
+        return ResponseEntity.ok(uploadService.upload(files));
+
     }
 }

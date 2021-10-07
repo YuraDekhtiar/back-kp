@@ -11,6 +11,7 @@ import com.dk.backkp.service.UploadService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 
@@ -24,7 +25,8 @@ public class TaskController {
     UploadService uploadService;
 
     @PostMapping
-    public ResponseEntity addNewTask(@RequestBody MyTaskEntity task, @CurrentUser UserPrincipal userPrincipal) throws IOException {
+    public ResponseEntity addNewTask(@RequestBody MyTaskEntity task,
+                                     @CurrentUser UserPrincipal userPrincipal) throws IOException {
         myTaskService.addNewTask(task, userPrincipal);
 
         return ResponseEntity.ok("ok");

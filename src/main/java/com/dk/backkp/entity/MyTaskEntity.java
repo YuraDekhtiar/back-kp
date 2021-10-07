@@ -2,7 +2,6 @@ package com.dk.backkp.entity;
 
 import lombok.Data;
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Data
@@ -26,5 +25,5 @@ public class MyTaskEntity {
     private List<AnswerEntity> answers;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "task")
-    private List<ImgUrlEntity> imgUrls;
+    private List<ImageEntity> images;
 }

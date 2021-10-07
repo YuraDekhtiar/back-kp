@@ -7,11 +7,12 @@ import javax.persistence.*;
 
 @Data
 @Entity
-@Table(name = "img_url_table")
-public class ImgUrlEntity {
+@Table(name = "img_table")
+public class ImageEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private String public_id;
     private String url;
 
     @ManyToOne
