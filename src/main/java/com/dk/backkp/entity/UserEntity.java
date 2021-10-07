@@ -38,6 +38,7 @@ public class UserEntity {
 
     private String providerId;
 
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "author")
     private List<MyTaskEntity> task;
 }
