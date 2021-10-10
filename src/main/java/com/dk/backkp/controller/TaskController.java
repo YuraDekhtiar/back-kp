@@ -53,15 +53,12 @@ public class TaskController {
     public ResponseEntity userAnswered(@PathVariable Long id,
 
                                     @CurrentUser UserPrincipal userPrincipal) {
-
-        return ResponseEntity.ok(myTaskService.userAnswered(id, userPrincipal.getId()));
-
-      /*  try {
+        try {
             return ResponseEntity.ok(myTaskService.userAnswered(id, userPrincipal.getId()));
         }
         catch (Exception e) {
             return ResponseEntity.badRequest().body("Error");
-        }*/
+        }
 
     }
 
