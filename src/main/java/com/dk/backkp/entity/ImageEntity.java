@@ -1,6 +1,5 @@
 package com.dk.backkp.entity;
 
-import com.dk.backkp.model.MyTask;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -12,8 +11,9 @@ public class ImageEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String public_id;
     private String url;
+    private String publicId;
+
 
     @ManyToOne
     @JoinColumn(name = "task_id")

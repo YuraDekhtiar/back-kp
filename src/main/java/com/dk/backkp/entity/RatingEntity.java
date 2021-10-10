@@ -20,6 +20,4 @@ public class RatingEntity {
     @ManyToOne
     @JoinColumn(name = "task_id")
     private MyTaskEntity task;
-
-
 }

@@ -1,4 +1,4 @@
-package com.dk.backkp.model;
+package com.dk.backkp.dto;
 
 import com.dk.backkp.entity.AnswerEntity;
 import lombok.Data;
