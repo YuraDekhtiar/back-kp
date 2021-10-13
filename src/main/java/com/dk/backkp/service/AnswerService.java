@@ -12,7 +12,7 @@ public class AnswerService {
     @Autowired
     AnswerRepository answerRepository;
 
-    public List<AnswerEntity> getAllAnswerByTaskId(Long task_id) {
-        return answerRepository.findAllByTask_id(task_id);
+    public List<AnswerEntity> getAllAnswerByTaskId(Long taskId) {
+        return answerRepository.findAllByTask_id(taskId);
     }
 }

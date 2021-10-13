@@ -1,5 +1,6 @@
 package com.dk.backkp.service;
 
+import com.dk.backkp.dto.MyTask;
 import com.dk.backkp.entity.MyTaskEntity;
 import com.dk.backkp.entity.UserEntity;
 import com.dk.backkp.exception.BadRequestException;
@@ -7,8 +8,13 @@ import com.dk.backkp.repository.TaskRepository;
 import com.dk.backkp.repository.UserRepository;
 import com.dk.backkp.security.UserPrincipal;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -19,6 +25,8 @@ public class MyTaskService {
     private UserRepository userRepository;
     @Autowired
     private UserAnswerService userAnswerService;
+    @Autowired
+    private TagService tagService;
 
 
     public MyTaskEntity addNewTask(MyTaskEntity myTask, UserPrincipal userPrincipal) {
@@ -26,28 +34,44 @@ public class MyTaskService {
         myTask.setAuthor(userEntity.get());
         myTask.getAnswers().stream().forEach(answerEntity -> answerEntity.setTask(myTask));
         myTask.getImages().stream().forEach(imageEntity -> imageEntity.setTask(myTask));
+        tagService.add(myTask.getTags());
 
         return taskRepository.save(myTask);
     }
 
     public MyTaskEntity getTaskById(Long id)  {
-        MyTaskEntity myTask = taskRepository.findById(id).
+        return taskRepository.findById(id).
                 orElseThrow(() -> new BadRequestException(id.toString()));
+    }
 
-        return myTask;
+    public MyTaskEntity getTaskByIdForEdit(Long id, Long userId)  {
+        MyTaskEntity myTaskEntity = getTaskById(id);
+
+        if(myTaskEntity.getId() == userId)
+            return myTaskEntity;
+        else
+            throw new BadRequestException(id.toString());
     }
 
     public boolean compareAnswer(Long taskId, String value, Long userId) {
         return userAnswerService.compare(taskId, value, userId);
     }
 
+    public Page<MyTaskEntity> getTasksPage(int page, int limit, String fieldName) {
+        Pageable pageable = PageRequest.of(page, limit, Sort.by(fieldName).descending());
+        return taskRepository.findAll(pageable);
+    }
+
     public MyTaskEntity save(MyTaskEntity myTask) {
         return taskRepository.save(myTask);
     }
 
-    public boolean userAnswered(Long id, Long userId) {
-        return userAnswerService.userAnswered(id, userId);
+    public boolean taskCompleted(Long id, Long userId) {
+        return userAnswerService.taskCompleted(id, userId);
     }
 
+    public List<MyTaskEntity> findAllByUserId(Long id) {
+        return taskRepository.findAllByAuthor_id(id);
+    }
 
 }

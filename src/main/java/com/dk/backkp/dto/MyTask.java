@@ -3,7 +3,9 @@ package com.dk.backkp.dto;
 import com.dk.backkp.entity.MyTaskEntity;
 import lombok.Data;
 
+import java.sql.Array;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,6 +34,14 @@ public class MyTask {
         model.setAverageRating(myTask.getAverageRating());
         model.setImages(myTask.getImages().stream().map(Image::toModel).collect(Collectors.toList()));
 
+        return model;
+    }
+
+    public static List<MyTask> toModel(Iterable<MyTaskEntity> myTasks) {
+        List <MyTask> model = new ArrayList();
+        for (MyTaskEntity myTask:myTasks) {
+            model.add(MyTask.toModel(myTask));
+        }
         return model;
     }
 }

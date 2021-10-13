@@ -28,7 +28,7 @@ public class UserAnswerService {
             UserAnswerEntity answer = new UserAnswerEntity();
 
             answer.setTask(taskService.getTaskById(taskId));
-            answer.setUser(userService.getUserById(userId));
+            answer.setUser(userService.getUserEntityById(userId));
             userAnswerRepository.save(answer);
 
             return true;
@@ -36,7 +36,11 @@ public class UserAnswerService {
         return false;
     }
 
-    public boolean userAnswered(Long taskId, Long userId) {
+    public boolean taskCompleted(Long taskId, Long userId) {
         return !userAnswerRepository.findByUser_idAndTask_id(userId, taskId).isEmpty();
+    }
+
+    public int getTaskCompletedCount(Long userId) {
+        return userAnswerRepository.findAllByUser_id(userId).size();
     }
 }

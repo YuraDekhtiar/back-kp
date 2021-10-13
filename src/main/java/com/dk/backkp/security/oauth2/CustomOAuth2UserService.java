@@ -17,6 +17,7 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
@@ -49,11 +50,6 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         UserEntity user;
         if(userOptional.isPresent()) {
             user = userOptional.get();
-            if(!user.getProvider().equals(AuthProviderEntity.valueOf(oAuth2UserRequest.getClientRegistration().getRegistrationId()))) {
-                throw new OAuth2AuthenticationProcessingException("Looks like you're signed up with " +
-                        user.getProvider() + " account. Please use your " + user.getProvider() +
-                        " account to login.");
-            }
             user = updateExistingUser(user, oAuth2UserInfo);
         } else {
             user = registerNewUser(oAuth2UserRequest, oAuth2UserInfo);
@@ -66,10 +62,10 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         UserEntity user = new UserEntity();
 
         user.setProvider(AuthProviderEntity.valueOf(oAuth2UserRequest.getClientRegistration().getRegistrationId()));
-        user.setProviderId(oAuth2UserInfo.getId());
         user.setName(oAuth2UserInfo.getName());
         user.setEmail(oAuth2UserInfo.getEmail());
         user.setImageUrl(oAuth2UserInfo.getImageUrl());
+        user.setRegistered(LocalDateTime.now());
         return userRepository.save(user);
     }
 

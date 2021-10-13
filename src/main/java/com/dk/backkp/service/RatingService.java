@@ -30,7 +30,7 @@ public class RatingService {
 
     public boolean setRating(Long taskId, Byte value, UserPrincipal userPrincipal) {
         MyTaskEntity myTask = taskService.getTaskById(taskId);
-        UserEntity user = userService.getUserById(userPrincipal.getId());
+        UserEntity user = userService.getUserEntityById(userPrincipal.getId());
         List<RatingEntity> listRating = ratingRepository.findAllByTask_id(taskId);
         Optional<RatingEntity> curUserRating = ratingRepository.findByTask_idAndUser_id(taskId, userPrincipal.getId());
 
