@@ -31,6 +31,11 @@ public class MyTaskEntity {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "task")
     private List<ImageEntity> images;
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "task")
+    private List<RatingEntity> ratingEntities;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "task")
+    private List<UserAnswerEntity> userAnswerEntities;
 
     public MyTaskEntity() {
         LocalDateTime date = LocalDateTime.now();

@@ -3,7 +3,7 @@ package com.dk.backkp.controller;
 import com.dk.backkp.entity.MyTaskEntity;
 import com.dk.backkp.security.CurrentUser;
 import com.dk.backkp.security.UserPrincipal;
-import com.dk.backkp.service.UploadService;
+import com.dk.backkp.service.FileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -21,11 +21,11 @@ import java.util.List;
 @RequestMapping
 public class UploadController {
     @Autowired
-    UploadService uploadService;
+    FileService fileService;
 
 
     @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity uploadFile(@RequestParam(value="file") MultipartFile[] files) throws Exception {
-        return ResponseEntity.ok(uploadService.upload(files));
+        return ResponseEntity.ok(fileService.upload(files));
     }
 }

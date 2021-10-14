@@ -12,7 +12,9 @@ public class UserAnswerEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @OneToOne
+    @JoinColumn(name = "user_id")
     UserEntity user;
     @OneToOne
+    @JoinColumn(name = "task_id")
     MyTaskEntity task;
 }

@@ -22,16 +22,18 @@ public class MyTaskService {
     @Autowired
     private TaskRepository taskRepository;
     @Autowired
-    private UserRepository userRepository;
+    private UserService userService;
     @Autowired
     private UserAnswerService userAnswerService;
     @Autowired
     private TagService tagService;
+    @Autowired
+    FileService fileService;
 
 
     public MyTaskEntity addNewTask(MyTaskEntity myTask, UserPrincipal userPrincipal) {
-        Optional<UserEntity> userEntity = userRepository.findById(userPrincipal.getId());
-        myTask.setAuthor(userEntity.get());
+        UserEntity userEntity = userService.getUserEntityById(userPrincipal.getId());
+        myTask.setAuthor(userEntity);
         myTask.getAnswers().stream().forEach(answerEntity -> answerEntity.setTask(myTask));
         myTask.getImages().stream().forEach(imageEntity -> imageEntity.setTask(myTask));
         tagService.add(myTask.getTags());
@@ -47,10 +49,28 @@ public class MyTaskService {
     public MyTaskEntity getTaskByIdForEdit(Long id, Long userId)  {
         MyTaskEntity myTaskEntity = getTaskById(id);
 
-        if(myTaskEntity.getId() == userId)
+        if(myTaskEntity.getAuthor().getId() == userId)
             return myTaskEntity;
         else
             throw new BadRequestException(id.toString());
+    }
+
+    public boolean deleteByListId(List<Long> listId, Long userId) throws Exception {
+        for (Long id:listId) {
+            deleteById(id, userId);
+        }
+        return true;
+    }
+
+    public boolean deleteById(Long id, Long userId) throws Exception {
+        MyTaskEntity myTask = getTaskById(id);
+        if(myTask.getAuthor().getId() == userId) {
+            fileService.delete(myTask.getImages());
+            taskRepository.delete(myTask);
+        }
+        else
+            throw new BadRequestException(id.toString());
+        return true;
     }
 
     public boolean compareAnswer(Long taskId, String value, Long userId) {
@@ -70,7 +90,7 @@ public class MyTaskService {
         return userAnswerService.taskCompleted(id, userId);
     }
 
-    public List<MyTaskEntity> findAllByUserId(Long id) {
+    public List<MyTaskEntity> getAllByUserId(Long id) {
         return taskRepository.findAllByAuthor_id(id);
     }
 

@@ -25,7 +25,7 @@ public class UserService {
         UserEntity userEntity = userRepository.findById(id).
                 orElseThrow(() -> new BadRequestException(id.toString()));
 
-        return new User(userEntity, myTaskService.findAllByUserId(id).size(),
+        return new User(userEntity, myTaskService.getAllByUserId(id).size(),
                 userAnswerService.getTaskCompletedCount(id));
     }
 }
