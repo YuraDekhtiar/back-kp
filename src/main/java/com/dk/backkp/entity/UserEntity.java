@@ -1,6 +1,7 @@
 package com.dk.backkp.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+import org.hibernate.search.annotations.Field;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -23,8 +24,8 @@ public class UserEntity {
 
     @Email
     @Column(nullable = false)
-
     private String email;
+
     private String imageUrl;
 
     @NotNull

@@ -10,6 +10,7 @@ import com.dk.backkp.service.MyTaskService;
 import com.dk.backkp.service.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,14 +21,11 @@ public class TaskController {
     @Autowired
     MyTaskService myTaskService;
 
-    @Autowired
-    TagService tagService;
 
     @PostMapping
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity addNewTask(@RequestBody MyTaskEntity task,
                                      @CurrentUser UserPrincipal userPrincipal) {
-         //return ResponseEntity.ok(1);
-
         try {
             return ResponseEntity.ok(myTaskService.addNewTask(task, userPrincipal).getId());
         }
@@ -49,7 +47,18 @@ public class TaskController {
         }
     }
 
+    @GetMapping(params = {"search"})
+    public ResponseEntity search(@RequestParam String search) {
+        try {
+            return ResponseEntity.ok(MyTask.toModel(myTaskService.searchTask(search)));
+        }
+        catch (Exception e) {
+            return ResponseEntity.badRequest().body("Error");
+        }
+    }
+
     @GetMapping("/edit/{id}")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity getTaskByIdForEdit(@PathVariable Long id, @CurrentUser UserPrincipal userPrincipal) {
         try {
             return ResponseEntity.ok(MyTaskEdit.toModel(myTaskService.getTaskByIdForEdit(id, userPrincipal.getId())));
@@ -63,6 +72,7 @@ public class TaskController {
     }
 
     @PostMapping("/delete")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity deleteById(@RequestBody List<Long> id,
                                      @CurrentUser UserPrincipal userPrincipal) throws Exception {
     try {
@@ -77,6 +87,7 @@ public class TaskController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity deleteById(@PathVariable Long id, @CurrentUser UserPrincipal userPrincipal) {
     try {
             return ResponseEntity.ok(myTaskService.deleteById(id, userPrincipal.getId()));
@@ -89,7 +100,6 @@ public class TaskController {
         }
     }
 
-
     @GetMapping(params = {"limit", "page", "sort"})
     public ResponseEntity getTasks(@RequestParam int limit, @RequestParam int page, @RequestParam String sort) {
         try {
@@ -101,6 +111,7 @@ public class TaskController {
     }
 
     @GetMapping(value = "/{id}", params = {"answer"})
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity getAnswer(@PathVariable Long id, @RequestParam String answer,
                                     @CurrentUser UserPrincipal userPrincipal) {
         try {
@@ -115,6 +126,7 @@ public class TaskController {
     }
 
     @GetMapping("/{id}/answered")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity userAnswered(@PathVariable Long id,
                                        @CurrentUser UserPrincipal userPrincipal) {
         try {
@@ -126,6 +138,7 @@ public class TaskController {
     }
 
     @GetMapping(params = {"user_id"})
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity getAllTaskByUserId(@RequestParam Long user_id) {
         try {
             return ResponseEntity.ok(MyTask.toModel(myTaskService.getAllByUserId(user_id)));
@@ -137,21 +150,4 @@ public class TaskController {
             return ResponseEntity.badRequest().body("Error");
         }
     }
-
-
-
-
-
-
-
-
-/*/////////////////////////////////////////////*/
-    @GetMapping("/tag/{tag}")
-    public ResponseEntity tag(@PathVariable String tag) {
-        tagService.add(tag);
-
-        return ResponseEntity.ok( "ok");
-    }
-
-
 }

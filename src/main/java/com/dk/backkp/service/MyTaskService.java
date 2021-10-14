@@ -1,12 +1,14 @@
 package com.dk.backkp.service;
 
-import com.dk.backkp.dto.MyTask;
 import com.dk.backkp.entity.MyTaskEntity;
 import com.dk.backkp.entity.UserEntity;
 import com.dk.backkp.exception.BadRequestException;
 import com.dk.backkp.repository.TaskRepository;
-import com.dk.backkp.repository.UserRepository;
 import com.dk.backkp.security.UserPrincipal;
+import org.hibernate.search.jpa.FullTextEntityManager;
+import org.hibernate.search.jpa.FullTextQuery;
+import org.hibernate.search.jpa.Search;
+import org.hibernate.search.query.dsl.QueryBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -14,8 +16,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.List;
-import java.util.Optional;
+
 
 @Service
 public class MyTaskService {
@@ -29,6 +33,9 @@ public class MyTaskService {
     private TagService tagService;
     @Autowired
     FileService fileService;
+
+    @PersistenceContext
+    private EntityManager entityManager;
 
 
     public MyTaskEntity addNewTask(MyTaskEntity myTask, UserPrincipal userPrincipal) {
@@ -92,6 +99,35 @@ public class MyTaskService {
 
     public List<MyTaskEntity> getAllByUserId(Long id) {
         return taskRepository.findAllByAuthor_id(id);
+    }
+
+    public List<MyTaskEntity> searchTask(String searchText) {
+
+        FullTextQuery jpaQuery = searchUsersQuery(searchText);
+
+        List<MyTaskEntity> myTaskEntityList = jpaQuery.getResultList();
+
+        return myTaskEntityList;
+
+    }
+
+    private FullTextQuery searchUsersQuery (String searchText) {
+        FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(entityManager);
+        QueryBuilder queryBuilder = fullTextEntityManager.getSearchFactory()
+                .buildQueryBuilder()
+                .forEntity(MyTaskEntity.class)
+                .get();
+
+        org.apache.lucene.search.Query luceneQuery = queryBuilder
+                .keyword()
+                .onFields("title", "body", "category", "tags")
+                .matching(searchText)
+                .createQuery();
+
+        FullTextQuery jpaQuery = fullTextEntityManager.createFullTextQuery(luceneQuery, MyTaskEntity.class);
+
+        return jpaQuery;
+
     }
 
 }

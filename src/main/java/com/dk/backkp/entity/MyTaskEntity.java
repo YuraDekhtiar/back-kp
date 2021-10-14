@@ -1,6 +1,8 @@
 package com.dk.backkp.entity;
 
 import lombok.Data;
+import org.hibernate.search.annotations.*;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -9,14 +11,19 @@ import java.util.List;
 @Data
 @Entity
 @Table(name = "tasks_table")
+@Indexed
 public class MyTaskEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Field
     private String title;
+    @Field
     private String body;
+    @Field
     private String category;
+    @Field
     private String tags;
     private LocalDateTime created;
     private byte averageRating;
@@ -41,5 +48,4 @@ public class MyTaskEntity {
         LocalDateTime date = LocalDateTime.now();
         this.created = date;
     }
-
 }
