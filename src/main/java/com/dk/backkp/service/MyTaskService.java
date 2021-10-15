@@ -20,7 +20,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 
-
 @Service
 public class MyTaskService {
     @Autowired
@@ -36,7 +35,6 @@ public class MyTaskService {
 
     @PersistenceContext
     private EntityManager entityManager;
-
 
     public MyTaskEntity addNewTask(MyTaskEntity myTask, UserPrincipal userPrincipal) {
         UserEntity userEntity = userService.getUserEntityById(userPrincipal.getId());
@@ -101,8 +99,8 @@ public class MyTaskService {
         return taskRepository.findAllByAuthor_id(id);
     }
 
-    public List<MyTaskEntity> searchTask(String searchText) {
 
+    public List<MyTaskEntity> searchTask(String searchText) {
         FullTextQuery jpaQuery = searchUsersQuery(searchText);
 
         List<MyTaskEntity> myTaskEntityList = jpaQuery.getResultList();

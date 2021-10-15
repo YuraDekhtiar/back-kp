@@ -12,6 +12,10 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+        search:
+          default:
+            directory_provider: filesystem
+            indexBase: indexpath
   security:
     oauth2:
       client:

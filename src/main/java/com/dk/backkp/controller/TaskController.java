@@ -21,7 +21,6 @@ public class TaskController {
     @Autowired
     MyTaskService myTaskService;
 
-
     @PostMapping
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity addNewTask(@RequestBody MyTaskEntity task,

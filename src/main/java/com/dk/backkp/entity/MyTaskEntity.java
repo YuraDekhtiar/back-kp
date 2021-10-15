@@ -25,6 +25,7 @@ public class MyTaskEntity {
     private String category;
     @Field
     private String tags;
+
     private LocalDateTime created;
     private byte averageRating;
 

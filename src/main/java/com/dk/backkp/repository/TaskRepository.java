@@ -10,7 +10,6 @@ import org.springframework.stereotype.Repository;
 import java.awt.print.Pageable;
 import java.util.List;
 
-
 @Repository
 public interface TaskRepository extends PagingAndSortingRepository<MyTaskEntity, Long> {
     List <MyTaskEntity> findAllByAuthor_id(Long id);

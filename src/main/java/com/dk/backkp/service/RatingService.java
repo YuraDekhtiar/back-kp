@@ -20,7 +20,6 @@ import java.util.stream.Collectors;
 
 @Service
 public class RatingService {
-
     @Autowired
     RatingRepository ratingRepository;
     @Autowired

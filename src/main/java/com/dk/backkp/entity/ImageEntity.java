@@ -14,7 +14,6 @@ public class ImageEntity {
     private String url;
     private String publicId;
 
-
     @ManyToOne
     @JoinColumn(name = "task_id")
     private MyTaskEntity task;

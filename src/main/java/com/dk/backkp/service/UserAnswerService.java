@@ -10,7 +10,6 @@ import java.util.Locale;
 
 @Service
 public class UserAnswerService {
-
     @Autowired
     private UserAnswerRepository userAnswerRepository;
     @Autowired
