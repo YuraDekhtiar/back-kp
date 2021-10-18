@@ -19,6 +19,11 @@ public class UploadController {
 
     @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity uploadFile(@RequestParam(value="file") MultipartFile[] files) throws Exception {
-        return ResponseEntity.ok(fileService.upload(files));
+        try {
+            return ResponseEntity.ok(fileService.upload(files));
+        }
+        catch (Exception e) {
+            return ResponseEntity.badRequest().body("Error");
+        }
     }
 }

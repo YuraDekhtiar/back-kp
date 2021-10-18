@@ -1,6 +1,5 @@
 package com.dk.backkp.dto;
 
-
 import com.dk.backkp.entity.UserEntity;
 import lombok.Data;
 

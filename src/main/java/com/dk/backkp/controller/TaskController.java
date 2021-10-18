@@ -7,7 +7,6 @@ import com.dk.backkp.exception.BadRequestException;
 import com.dk.backkp.security.CurrentUser;
 import com.dk.backkp.security.UserPrincipal;
 import com.dk.backkp.service.MyTaskService;
-import com.dk.backkp.service.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
@@ -24,7 +23,7 @@ public class TaskController {
     MyTaskService myTaskService;
 
     @PostMapping
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity addNewTask(@RequestBody MyTaskEntity task,
                                      @CurrentUser UserPrincipal userPrincipal) {
         try {
@@ -59,7 +58,7 @@ public class TaskController {
     }
 
     @GetMapping("/edit/{id}")
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity getTaskByIdForEdit(@PathVariable Long id, @CurrentUser UserPrincipal userPrincipal) {
         try {
             return ResponseEntity.ok(MyTaskEdit.toModel(myTaskService.getTaskByIdForEdit(id, userPrincipal.getId())));
@@ -73,25 +72,11 @@ public class TaskController {
     }
 
     @PostMapping("/delete")
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity deleteById(@RequestBody List<Long> id,
                                      @CurrentUser UserPrincipal userPrincipal) throws Exception {
     try {
             return ResponseEntity.ok(myTaskService.deleteByListId(id, userPrincipal.getId()));
-        }
-        catch (BadRequestException e) {
-            return ResponseEntity.badRequest().body(e);
-        }
-        catch (Exception e) {
-            return ResponseEntity.badRequest().body("Error");
-        }
-    }
-
-    @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('USER')")
-    public ResponseEntity deleteById(@PathVariable Long id, @CurrentUser UserPrincipal userPrincipal) {
-    try {
-            return ResponseEntity.ok(myTaskService.deleteById(id, userPrincipal.getId()));
         }
         catch (BadRequestException e) {
             return ResponseEntity.badRequest().body(e);
@@ -118,7 +103,7 @@ public class TaskController {
     }
 
     @GetMapping(value = "/{id}", params = {"answer"})
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity getAnswer(@PathVariable Long id, @RequestParam String answer,
                                     @CurrentUser UserPrincipal userPrincipal) {
         try {
@@ -133,7 +118,7 @@ public class TaskController {
     }
 
     @GetMapping("/{id}/answered")
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity userAnswered(@PathVariable Long id,
                                        @CurrentUser UserPrincipal userPrincipal) {
         try {
@@ -145,7 +130,7 @@ public class TaskController {
     }
 
     @GetMapping(params = {"user_id"})
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity getAllTaskByUserId(@RequestParam Long user_id) {
         try {
             return ResponseEntity.ok(MyTask.toModel(myTaskService.getAllByUserId(user_id)));

@@ -14,7 +14,6 @@ public class TagEntity {
     private String tag;
 
     public TagEntity() {}
-
     public TagEntity(String t) {
         this.tag = t;
     }

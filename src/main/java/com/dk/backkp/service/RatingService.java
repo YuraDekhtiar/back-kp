@@ -1,22 +1,14 @@
 package com.dk.backkp.service;
 
-import com.dk.backkp.dto.Image;
-import com.dk.backkp.entity.AnswerEntity;
 import com.dk.backkp.entity.MyTaskEntity;
 import com.dk.backkp.entity.RatingEntity;
 import com.dk.backkp.entity.UserEntity;
-import com.dk.backkp.exception.BadRequestException;
 import com.dk.backkp.repository.RatingRepository;
-import com.dk.backkp.repository.TaskRepository;
-import com.dk.backkp.repository.UserRepository;
 import com.dk.backkp.security.UserPrincipal;
-import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 public class RatingService {
