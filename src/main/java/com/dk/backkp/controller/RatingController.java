@@ -6,10 +6,7 @@ import com.dk.backkp.security.UserPrincipal;
 import com.dk.backkp.service.RatingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/rating")
@@ -17,7 +14,7 @@ public class RatingController {
     @Autowired
     RatingService ratingService;
 
-    @PostMapping("/{id}/{value}")
+    @GetMapping("/{id}/{value}")
     public ResponseEntity setRating(@PathVariable Long id, @PathVariable Byte value,
                                     @CurrentUser UserPrincipal userPrincipal) {
         try {

@@ -36,7 +36,7 @@ spring:
               - public_profile
           github:
             clientId: 48afd861e10fc1f2fb65
-            clientSecret: 1c087fe6d24f831e9d069c3354005a06f9d5b12b
+            clientSecret: 5eb234d6c5f311875a0d4895fe284a5dd7720cdc
             redirectUri: "{baseUrl}/oauth2/callback/{registrationId}"
             scope:
               - user:email
@@ -49,7 +49,7 @@ spring:
 app:
   auth:
     tokenSecret: 926D96C90030DD58429D2751AC1BDBBC
-    tokenExpirationMsec: 864000000
+    tokenExpirationMsec: 86400000
   oauth2:
     authorizedRedirectUris:
       - http://localhost:3000/oauth2/redirect
