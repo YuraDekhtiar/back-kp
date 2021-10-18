@@ -32,7 +32,6 @@ public class MyTaskService {
     private TagService tagService;
     @Autowired
     FileService fileService;
-
     @PersistenceContext
     private EntityManager entityManager;
 
@@ -99,7 +98,6 @@ public class MyTaskService {
         return taskRepository.findAllByAuthor_id(id);
     }
 
-
     public List<MyTaskEntity> searchTask(String searchText) {
         FullTextQuery jpaQuery = searchUsersQuery(searchText);
 
@@ -125,7 +123,5 @@ public class MyTaskService {
         FullTextQuery jpaQuery = fullTextEntityManager.createFullTextQuery(luceneQuery, MyTaskEntity.class);
 
         return jpaQuery;
-
     }
-
 }
