@@ -9,6 +9,8 @@ import com.dk.backkp.security.UserPrincipal;
 import com.dk.backkp.service.MyTaskService;
 import com.dk.backkp.service.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -102,7 +104,13 @@ public class TaskController {
     @GetMapping(params = {"limit", "page", "sort"})
     public ResponseEntity getTasks(@RequestParam int limit, @RequestParam int page, @RequestParam String sort) {
         try {
-            return ResponseEntity.ok(MyTask.toModel(myTaskService.getTasksPage(page, limit, sort)));
+            Page<MyTaskEntity> tasksPage = myTaskService.getTasksPage(page, limit, sort);
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.add("Access-Control-Expose-Headers", "x-total-count");
+            headers.add("x-total-count", tasksPage.getTotalElements() + "");
+
+            return ResponseEntity.ok().headers(headers).body(MyTask.toModel(tasksPage));
         }
         catch (Exception e) {
             return ResponseEntity.badRequest().body("Error");
